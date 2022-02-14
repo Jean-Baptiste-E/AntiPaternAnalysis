@@ -5,15 +5,14 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-CSVWriter >> generateCSVLine: stream [
+CSVWriter >> generateCSVLine: data [
 	"comment stating purpose of instance-side message"
 	"scope: class-variables  &  instance-variables"	
 			
-	| line |
-	
-	(NeoCSVWriter on: line)
-			writeHeader: #('averageLineOfCode' 'maxLinesOfCode');
-			nextPutAll: stream.
-			
-		^line
+	'test.csv' asFileReference
+	writeStreamDo: [ :writeStream |
+		(NeoCSVWriter on: writeStream)
+ 			writeHeader: #(average max);
+			nextPutAll: data ].
+		
 ]

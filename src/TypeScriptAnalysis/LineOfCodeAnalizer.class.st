@@ -5,23 +5,33 @@ Class {
 }
 
 { #category : #'as yet unclassified' }
-LineOfCodeAnalizer >> averageLinesOfCodeInMethods: model [
-	"comment stating purpose of instance-side message"
-	"scope: class-variables  &  instance-variables"
-	
-	|average| 
-	average:= model allMethods average: [ :each | each numberOfLinesOfCode ].
-	^average 	asFloat
-
+LineOfCodeAnalizer class >> getAverageLineOfCodeByMethod: model [ 
+	"comment stating purpose of class-side message"
+	"scope: class-variables  &  class-instance-variables"
+	| average dictionary|
+	average :=model allMethods average: [ :each | each numberOfLinesOfCode ].
+	dictionary := {'Average LOC by Method' -> average} asDictionary .
+			
+	^dictionary
 ]
 
 { #category : #'as yet unclassified' }
-LineOfCodeAnalizer >> maxLinesOfCodeInMethods: model [
-	"comment stating purpose of instance-side message"
-	"scope: class-variables  &  instance-variables"
+LineOfCodeAnalizer class >> getBiggestMethod: model [
+	"comment stating purpose of class-side message"
+	"scope: class-variables  &  class-instance-variables"	
+			
+	| biggestMethod maxNumberOfLinesOfCode | 
+	maxNumberOfLinesOfCode := model allMethods max: [ :each | each numberOfLinesOfCode ].
+	biggestMethod := model allMethods select: [ :each | each numberOfLinesOfCode = maxNumberOfLinesOfCode ].
+	^maxNumberOfLinesOfCode
 	
-	| max | 
-	max:= model allMethods max: [ :each | each numberOfLinesOfCode ].
-	^max 	
+]
 
+{ #category : #'as yet unclassified' }
+LineOfCodeAnalizer class >> getLinesOfCodeStats: model [
+	"comment stating purpose of class-side message"
+	"scope: class-variables  &  class-instance-variables"	
+	| linesOfCodeDictionary |
+	linesOfCodeDictionary := LineOfCodeAnalizer getAverageLineOfCodeByMethod: model.
+	 ^linesOfCodeDictionary 
 ]

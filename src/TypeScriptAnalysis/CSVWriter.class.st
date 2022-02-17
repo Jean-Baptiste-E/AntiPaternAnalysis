@@ -8,13 +8,16 @@ Class {
 CSVWriter >> generateCSVLine: data [
 	"comment stating purpose of instance-side message"
 	"scope: class-variables  &  instance-variables"
-	|tmp|
-	tmp := data values asCollection.	
+	|values valuesToPrint|
+	values := (data values) asOrderedCollection.
+	valuesToPrint := OrderedCollection new.
+	valuesToPrint add: (values) .
+		
 			
 	'test.csv' asFileReference
 	writeStreamDo: [ :writeStream |
 		(NeoCSVWriter on: writeStream)
  			writeHeader: data keys;
-			nextPutAll:  #(1 2 3) ].
+			nextPutAll:  valuesToPrint ].
 		
 ]

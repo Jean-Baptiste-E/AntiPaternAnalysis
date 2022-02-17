@@ -9,8 +9,11 @@ GodClassDetector class >> detectGodClass: model [
 	"comment stating purpose of class-side message"
 	"scope: class-variables  &  class-instance-variables"	
 			
-	| hasGodClass averageNumberOfDependancies accessingClasses|
-	accessingClasses := model allClasses average: [ :each | each invocation].
-	averageNumberOfDependancies := accessingClasses size.
-	^averageNumberOfDependancies 
+	| averageFanIn potentialGodClasses data|
+	data:= OrderedCollection new.
+	averageFanIn := model allClasses average: [ :each | each fanIn ].
+	potentialGodClasses := model allClasses select: [ :each | each fanIn > (3 * averageFanIn ) ].
+	data add: averageFanIn asFloat ;
+		add: potentialGodClasses size.
+	^data.
 ]

@@ -11,7 +11,7 @@ LineOfCodeAnalizer class >> getAverageLineOfCodeByMethod: model [
 	| average |
 	average := model allMethods average: [ :each | each numberOfLinesOfCode ].
 			
-	^average 
+	^average asFloat
 ]
 
 { #category : #'as yet unclassified' }

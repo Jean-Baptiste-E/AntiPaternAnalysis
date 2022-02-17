@@ -8,14 +8,18 @@ Class {
 TypeScriptAnalyzer >> analyzeProject: path [
 	"comment stating purpose of instance-side message"
 	"scope: class-variables  &  instance-variables"
-	|model data globalDictionary linesOfCodeDictionary finalLine|
-	data:= Dictionary new.
+	|model headers data finalLine projectData|
+	headers := #('Project Name' 'Classes' 'Methods' 'AVG LOC By Method' 'Bigest Method LOC' 'Methods > 3 parameters' 'AVG Dep/Class').
+	projectData:= OrderedCollection new.
 	model:= ProjectLoader new loadProject: path	.
-	globalDictionary := GlobalParametersAnalizer getGlobalParameters: model.
-	linesOfCodeDictionary := LineOfCodeAnalizer getLinesOfCodeStats: model.
-	UtilityHandler merge: globalDictionary  into: data.
-	UtilityHandler merge: linesOfCodeDictionary   into: data.
-	finalLine:= CSVWriter new generateCSVLine: data.
+	projectData add: model name;
+		addAll: (GlobalParametersAnalizer getGlobalParameters: model);
+		addAll: (LineOfCodeAnalizer getLinesOfCodeStats: model);
+		add: (HeavyMethodDetector getHeavyMethods: model);
+		add: (GodClassDetector detectGodClass: model).
+	data := OrderedCollection new.
+	data add: projectData.
+	finalLine:= CSVWriter new write: data withHeaders: headers.
 	  
 	^finalLine  
 ]

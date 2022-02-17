@@ -21,3 +21,16 @@ CSVWriter >> generateCSVLine: data [
 			nextPutAll:  valuesToPrint ].
 		
 ]
+
+{ #category : #'as yet unclassified' }
+CSVWriter >> write: data withHeaders: headers [
+	"comment stating purpose of instance-side message"
+	"scope: class-variables  &  instance-variables"
+				
+	'test.csv' asFileReference
+	writeStreamDo: [ :writeStream |
+		(NeoCSVWriter on: writeStream)
+ 			writeHeader: headers;
+			nextPutAll:  data ].
+		
+]

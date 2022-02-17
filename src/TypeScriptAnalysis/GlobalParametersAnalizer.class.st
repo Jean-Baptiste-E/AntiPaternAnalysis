@@ -10,8 +10,9 @@ GlobalParametersAnalizer class >> getGlobalParameters: model [
 	"scope: class-variables  &  class-instance-variables"	
 			
 	| globalParameters |
-	globalParameters:= Dictionary new.
-	globalParameters at: #ClassesNo put: (model numberOfClasses). 
-	globalParameters at: #MethodsNo put: (model numberOfMethods). 
+	globalParameters:= OrderedCollection  new.
+	globalParameters add: model numberOfClasses.
+	globalParameters add: model numberOfMethods.
+	
 	^globalParameters 
 ]

@@ -8,11 +8,10 @@ Class {
 LineOfCodeAnalizer class >> getAverageLineOfCodeByMethod: model [ 
 	"comment stating purpose of class-side message"
 	"scope: class-variables  &  class-instance-variables"
-	| average dictionary|
-	average :=model allMethods average: [ :each | each numberOfLinesOfCode ].
-	dictionary := {'Average LOC by Method' -> average} asDictionary .
+	| average |
+	average := model allMethods average: [ :each | each numberOfLinesOfCode ].
 			
-	^dictionary
+	^average 
 ]
 
 { #category : #'as yet unclassified' }
@@ -23,7 +22,8 @@ LineOfCodeAnalizer class >> getBiggestMethod: model [
 	| biggestMethod maxNumberOfLinesOfCode | 
 	maxNumberOfLinesOfCode := model allMethods max: [ :each | each numberOfLinesOfCode ].
 	biggestMethod := model allMethods select: [ :each | each numberOfLinesOfCode = maxNumberOfLinesOfCode ].
-	^maxNumberOfLinesOfCode
+	
+	^maxNumberOfLinesOfCode  
 	
 ]
 
@@ -31,7 +31,9 @@ LineOfCodeAnalizer class >> getBiggestMethod: model [
 LineOfCodeAnalizer class >> getLinesOfCodeStats: model [
 	"comment stating purpose of class-side message"
 	"scope: class-variables  &  class-instance-variables"	
-	| linesOfCodeDictionary |
-	linesOfCodeDictionary := LineOfCodeAnalizer getAverageLineOfCodeByMethod: model.
-	 ^linesOfCodeDictionary 
+	| data |
+	data:= OrderedCollection new.
+	data add: (self getAverageLineOfCodeByMethod: model).
+	data add: (self getBiggestMethod: model).
+	^data 
 ]

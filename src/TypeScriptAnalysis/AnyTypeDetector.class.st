@@ -44,9 +44,8 @@ AnyTypeDetector class >> getNumOfOtherTypes: model [
 
 	"scope: class-variables  &  class-instance-variables"
 
-	| numberOfOtherTypeVariables otherTypes types |
+	| numberOfOtherTypeVariables types |
 	types := model allTypes.
-	otherTypes := types select: [ :each | each name ~= 'any' ].
-	numberOfOtherTypeVariables := otherTypes sum: [ :each | each typedEntities size ].
+	numberOfOtherTypeVariables := types sum: [ :each | each typedEntities size ].
 	^ numberOfOtherTypeVariables 
 ]

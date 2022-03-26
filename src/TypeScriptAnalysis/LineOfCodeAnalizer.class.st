@@ -34,8 +34,9 @@ LineOfCodeAnalizer class >> getLinesOfCodeStats: model [
 	| data |
 	data:= OrderedCollection new.
 	data add: (self getAverageLineOfCodeByMethod: model);
-		add: (self getBiggestMethod: model);
-		add: (self getMethodCountFrom: model overLOC: 100) .
+		add: (self getMethodCountFrom: model overLOC: 100);
+		add: (self getBiggestMethod: model).
+ .
 	^data 
 ]
 

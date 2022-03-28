@@ -11,7 +11,7 @@ LineOfCodeAnalizer class >> getAverageLineOfCodeByMethod: model [
 	| average |
 	average := model allMethods average: [ :each | each numberOfLinesOfCode ].
 			
-	^average 
+	^average asFloat
 ]
 
 { #category : #'as yet unclassified' }
@@ -33,7 +33,18 @@ LineOfCodeAnalizer class >> getLinesOfCodeStats: model [
 	"scope: class-variables  &  class-instance-variables"	
 	| data |
 	data:= OrderedCollection new.
-	data add: (self getAverageLineOfCodeByMethod: model).
-	data add: (self getBiggestMethod: model).
+	data add: (self getAverageLineOfCodeByMethod: model);
+		add: (self getMethodCountFrom: model overLOC: 100);
+		add: (self getBiggestMethod: model).
+ .
 	^data 
+]
+
+{ #category : #'as yet unclassified' }
+LineOfCodeAnalizer class >> getMethodCountFrom: model overLOC: loc [
+	"comment stating purpose of class-side message"
+	"scope: class-variables  &  class-instance-variables"
+	| count |
+	count := model allMethods select: [ :each | each numberOfLinesOfCode > loc].
+	^count size asFloat
 ]

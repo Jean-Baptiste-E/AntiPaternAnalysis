@@ -30,9 +30,12 @@ AnyTypeDetector class >> getNumOfAny:  model [
 	| numberOfAnyVariable types |
 	types := model allTypes.
 	numberOfAnyVariable := types select: [ :each | each name = 'any' ].
-	numberOfAnyVariable := numberOfAnyVariable at: 1.
-	numberOfAnyVariable := numberOfAnyVariable typedEntities size.
-	^numberOfAnyVariable 
+	numberOfAnyVariable isEmpty 
+	ifFalse:  [ numberOfAnyVariable := numberOfAnyVariable at: 1.
+				numberOfAnyVariable := numberOfAnyVariable typedEntities size.
+				^numberOfAnyVariable  ]
+	ifTrue: [ ^0 ]
+	
 	
 	
 

@@ -13,7 +13,10 @@ AnyTypeDetector class >> getAnyStats:  model [
 	collection := OrderedCollection new.
 	anyVariables := self getNumOfAny: model.
 	otherVariables := self getNumOfOtherTypes: model.
-	proportion := (anyVariables / otherVariables).
+	proportion := 0.
+	otherVariables = 0
+		ifFalse: [ proportion := (anyVariables / otherVariables).].
+	
 	collection add: anyVariables.
 	collection add: proportion asFloat.
 	^collection .
@@ -49,6 +52,8 @@ AnyTypeDetector class >> getNumOfOtherTypes: model [
 
 	| numberOfOtherTypeVariables types |
 	types := model allTypes.
+	types isEmpty 
+		ifTrue:[^0].
 	numberOfOtherTypeVariables := types sum: [ :each | each typedEntities size ].
 	^ numberOfOtherTypeVariables 
 ]

@@ -9,12 +9,25 @@ GodClassDetector class >> detectGodClass: model [
 	"comment stating purpose of class-side message"
 	"scope: class-variables  &  class-instance-variables"	
 			
-	| averageFanOut classesPercentage potentialGodClasses data|
+	| averageFanOut classesPercentage potentialGodClasses numberOfPotentialGodClasses data|
 	data:= OrderedCollection new.
 	classesPercentage := (model allClasses size) * (40/100).
-	averageFanOut := model allClasses average: [ :each | each fanIn ].
-	potentialGodClasses := model allClasses select: [ :each | each fanOut > classesPercentage ].
+	model allClasses isEmpty
+		ifFalse: [ 	
+				averageFanOut := model allClasses average: [ :each | each fanIn ].
+				potentialGodClasses := model allClasses select: [ :each | self isGodClass: each forRatio: 				classesPercentage ].
+				numberOfPotentialGodClasses := potentialGodClasses size. ]
+		ifTrue: [ averageFanOut := 0. numberOfPotentialGodClasses := 0 ].
+
 	data add: averageFanOut asFloat ;
-		add: potentialGodClasses size.
+		add: numberOfPotentialGodClasses.
 	^data.
+]
+
+{ #category : #testing }
+GodClassDetector class >> isGodClass: class forRatio: ratio [
+	"comment stating purpose of class-side message"
+	"scope: class-variables  &  class-instance-variables"	
+			
+	^ class fanOut > ratio.
 ]
